@@ -20,7 +20,9 @@ function App() {
       <div id="App">
         <MenuBar />
         <Grid2 container spacing={2}>
-          <Grid2 size={4}>{/* <Item>size=8</Item> */}</Grid2>
+          <Grid2 size={4} sx={{ marginTop: 50, height: 720 }}>
+            {/* <Item>size=8</Item> */}
+          </Grid2>
           <Grid2 size={8} className="songsTableGrid">
             <SongsTable />
           </Grid2>

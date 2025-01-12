@@ -10,7 +10,7 @@ export const MenuBar = () => {
   // const [clearAlertOpen, setClearAlertOpen] = useState(false);
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" className="appBarStyle">
       <Toolbar variant="dense">
         <Tooltip title="Open files">
           <IconButton
