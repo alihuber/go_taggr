@@ -1,21 +1,33 @@
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
-import Button from '@mui/material/Button';
 import './App.css';
 import { MenuBar } from './MenuBar';
-import { useAppDispatch } from './hooks';
-import { setMessage } from './features/messageSlice';
+import { Grid2 } from '@mui/material';
+import { SongsTable } from './SongsTable';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 function App() {
-  const dispatch = useAppDispatch();
-
   return (
-    <div id="App">
-      <MenuBar />
-      <Button variant="contained" onClick={() => dispatch(setMessage('boo'))}>
-        Hello world
-      </Button>
-      <ToastContainer />
-    </div>
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+
+      <div id="App">
+        <MenuBar />
+        <Grid2 container spacing={2}>
+          <Grid2 size={4}>{/* <Item>size=8</Item> */}</Grid2>
+          <Grid2 size={8} className="songsTableGrid">
+            <SongsTable />
+          </Grid2>
+        </Grid2>
+        <ToastContainer />
+      </div>
+    </ThemeProvider>
   );
 }
 

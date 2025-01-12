@@ -8,7 +8,20 @@ const notifyError = (message: string) => {
   });
 };
 
-interface Metadata {}
+interface Metadata {
+  index: number;
+  album: string;
+  albumArtist: string;
+  artist: string;
+  comment: string;
+  cover: string;
+  fileName: string;
+  genre: string;
+  selected: boolean;
+  title: string;
+  track: string;
+  year: string;
+}
 
 // Define a type for the slice state
 interface MetadataState {
@@ -32,10 +45,13 @@ export const metadataSlice = createSlice({
       }
       state.value = action.payload || [];
     },
+    clearMetadata: (state) => {
+      state.value = [];
+    },
   },
 });
 
-export const { setMetadata } = metadataSlice.actions;
+export const { setMetadata, clearMetadata } = metadataSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type
 export const selectMetadata = (state: RootState) => state.metadata;

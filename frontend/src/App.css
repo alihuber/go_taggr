@@ -15,6 +15,16 @@
     background-origin: content-box;
 }
 
+.emptyButton {
+    margin-top: 320px;
+    opacity: 0.5;
+}
+
+.songsTableGrid {
+    border-left-style: solid;
+    border-width: 1px;
+}
+
 .result {
     height: 20px;
     line-height: 20px;

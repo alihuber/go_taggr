@@ -1,11 +1,13 @@
-import { FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
+import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch } from './hooks';
 import { OpenFiles } from '../wailsjs/go/main/App';
-import { setMetadata } from './features/metadataSlice';
+import { setMetadata, clearMetadata } from './features/metadataSlice';
+import { useState } from 'react';
 
 export const MenuBar = () => {
   const dispatch = useAppDispatch();
+  // const [clearAlertOpen, setClearAlertOpen] = useState(false);
 
   return (
     <AppBar position="static">
@@ -23,17 +25,6 @@ export const MenuBar = () => {
             <FileOpenOutlined />
           </IconButton>
         </Tooltip>
-        <Tooltip title="Save to disk">
-          <IconButton
-            color="inherit"
-            aria-label="Save"
-            onClick={() => {
-              console.log('foo');
-            }}
-          >
-            <SaveOutlined />
-          </IconButton>
-        </Tooltip>
         <Tooltip title="Numbering">
           <IconButton color="inherit" aria-label="Numbering" onClick={() => dispatch({ type: 'SET_NUMBERING_DIALOG_OPEN', payload: true })}>
             <FormatListNumberedOutlined />
@@ -48,25 +39,30 @@ export const MenuBar = () => {
             <FileCopyOutlined />
           </IconButton>
         </Tooltip>
-        {/* <div className={classes.grow} /> */}
-        {/* {
-          <BottomNavigationAction
-            className={classes.statusIcon}
-            label="Clear"
-            icon={<ClearIcon />}
-            showLabel
-            value={2}
-            onClick={() => handleClear()}
-          />
-        }
-        <div className={classes.grow} />
-        <div className={classes.title}>
-          <Typography variant="h6" color="inherit" className={classes.grow}>
-            taggr
-          </Typography>
-        </div> */}
+        <Tooltip title="Save to disk">
+          <IconButton
+            color="inherit"
+            aria-label="Save"
+            onClick={() => {
+              console.log('foo');
+            }}
+          >
+            <SaveOutlined />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Clear data">
+          <IconButton
+            sx={{ marginLeft: 'auto' }}
+            color="inherit"
+            aria-label="Clear"
+            onClick={() => {
+              dispatch(clearMetadata());
+            }}
+          >
+            <ClearAllOutlined />
+          </IconButton>
+        </Tooltip>
       </Toolbar>
-      {/* {<BottomNavigationAction label={'loaded X files'} icon={<MusicNoteOutlined />} disabled showLabel />} */}
     </AppBar>
   );
 };

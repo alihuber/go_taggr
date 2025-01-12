@@ -13,8 +13,8 @@ import (
 type Metadata struct {
 	Index       int    `json:"index"`
 	Album       string `json:"album"`
-	Artist      string `json:"artist"`
 	AlbumArtist string `json:"albumArtist"`
+	Artist      string `json:"artist"`
 	Comment     string `json:"comment"`
 	Cover       string `json:"cover"`
 	FileName    string `json:"fileName"`
@@ -61,16 +61,39 @@ func (a *App) OpenFiles() []Metadata {
 		}
 		defer tag.Close()
 
+		pictures := tag.GetFrames(tag.CommonID("Attached picture"))
+
+		for _, f := range pictures {
+			pic, ok := f.(id3v2.PictureFrame)
+			if !ok {
+				log.Println("Couldn't assert picture frame")
+				return emptyResult
+			}
+
+			// Do something with picture frame.
+			// For example, print the description:
+			fmt.Println(pic.Picture)
+		}
+
 		// Read frames.
 		fmt.Println()
 		fmt.Println(filename)
 		fmt.Println(tag.Artist())
 		fmt.Println(tag.Title())
 		metadata := Metadata{
-			Index: idx,
-			Title: tag.Title(),
-			// filename,
-			Track: tag.GetTextFrame(tag.CommonID("TRCK")).Text,
+			Index:       idx,
+			Album:       tag.Album(),
+			AlbumArtist: tag.Artist(),
+			Artist:      tag.Artist(),
+			Comment:     tag.GetTextFrame(tag.CommonID("COMM")).Text,
+			// TODO: cover image
+			Cover:    "TODO",
+			FileName: filename,
+			Genre:    tag.Genre(),
+			Selected: false,
+			Title:    tag.Title(),
+			Track:    tag.GetTextFrame(tag.CommonID("TRCK")).Text,
+			Year:     tag.Year(),
 		}
 		metadataList = append(metadataList, metadata)
 	}
