@@ -6,6 +6,8 @@ toolchain go1.23.4
 
 require github.com/wailsapp/wails/v2 v2.9.2
 
+require github.com/bogem/id3v2/v2 v2.1.4
+
 require (
 	github.com/bep/debounce v1.2.1 // indirect
 	github.com/go-ole/go-ole v1.2.6 // indirect

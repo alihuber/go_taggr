@@ -1,11 +1,28 @@
-import { FileCopyOutlined, FormatListNumberedOutlined, MusicNoteOutlined, SaveOutlined } from '@mui/icons-material';
+import { FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
+import { useAppDispatch } from './hooks';
+import { OpenFiles } from '../wailsjs/go/main/App';
+import { setMetadata } from './features/metadataSlice';
 
 export const MenuBar = () => {
-  const dispatch = ({}: { type: string; payload: boolean }) => {};
+  const dispatch = useAppDispatch();
+
   return (
     <AppBar position="static">
       <Toolbar variant="dense">
+        <Tooltip title="Open files">
+          <IconButton
+            color="inherit"
+            aria-label="Open"
+            onClick={() => {
+              OpenFiles().then((result) => {
+                dispatch(setMetadata(result));
+              });
+            }}
+          >
+            <FileOpenOutlined />
+          </IconButton>
+        </Tooltip>
         <Tooltip title="Save to disk">
           <IconButton
             color="inherit"
