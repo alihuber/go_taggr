@@ -2,7 +2,7 @@ import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumbere
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenFiles } from '../wailsjs/go/main/App';
-import { setMetadata } from './features/metadataSlice';
+import { setLoadedMetadata } from './features/metadataSlice';
 import { setConfirmClearOpen } from './features/confirmClearSlice';
 
 export const MenuBar = () => {
@@ -19,7 +19,7 @@ export const MenuBar = () => {
             disabled={metadata?.value?.length !== 0}
             onClick={() => {
               OpenFiles().then((result) => {
-                dispatch(setMetadata(result));
+                dispatch(setLoadedMetadata(result));
               });
             }}
           >

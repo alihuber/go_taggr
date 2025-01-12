@@ -1,18 +1,58 @@
 import { Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import { cloneDeep } from 'lodash';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenFiles } from '../wailsjs/go/main/App';
-import { setMetadata } from './features/metadataSlice';
-import { MouseEvent, useState } from 'react';
+import { Metadata, setLoadedMetadata, setMetadata, setSelectedMetadata } from './features/metadataSlice';
+import { MouseEvent } from 'react';
 
 export const SongsTable = () => {
   const dispatch = useAppDispatch();
-  const metadata = useAppSelector((state) => state.metadata);
-  const [selected, setSelected] = useState<number[]>([]);
+  const metadata = useAppSelector((state) => state?.metadata?.value);
+  let selectedCount = 0;
+  metadata.forEach((value) => {
+    if (value.selected) selectedCount++;
+  });
 
-  const onSelectAllClick = () => {};
-  const handleClick = (event: MouseEvent, index: number) => {};
+  const onSelectAllClick = () => {
+    const clonedData: Metadata[] = [];
+    if (selectedCount === metadata.length) {
+      metadata.forEach((data) => {
+        const clone = cloneDeep(data);
+        clone.selected = false;
+        clonedData.push(clone);
+      });
+      const emptyData = {
+        album: '',
+        albumArtist: '',
+        artist: '',
+        comment: '',
+        cover: '',
+        fileName: '',
+        genre: '',
+        index: 0,
+        selected: false,
+        title: '',
+        track: '',
+        year: '',
+      };
+      dispatch(setSelectedMetadata(emptyData));
+    } else {
+      metadata.forEach((data) => {
+        const clone = cloneDeep(data);
+        clone.selected = true;
+        clonedData.push(clone);
+      });
+      dispatch(setSelectedMetadata(clonedData[0]));
+    }
+    dispatch(setMetadata(clonedData));
+  };
 
-  if (metadata?.value?.length === 0) {
+  const handleClick = (_event: MouseEvent, data: Metadata) => {
+    const clonedData = { ...data, selected: !data.selected };
+    dispatch(setSelectedMetadata(clonedData));
+  };
+
+  if (metadata?.length === 0) {
     return (
       <div className="emptyButton">
         <Button
@@ -20,7 +60,7 @@ export const SongsTable = () => {
           color="inherit"
           onClick={() => {
             OpenFiles().then((result) => {
-              dispatch(setMetadata(result));
+              dispatch(setLoadedMetadata(result));
             });
           }}
         >
@@ -37,7 +77,7 @@ export const SongsTable = () => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selected.length > 0 && selected.length === metadata.value.length}
+                  checked={selectedCount > 0 && selectedCount === metadata.length}
                   onChange={onSelectAllClick}
                   inputProps={{
                     'aria-label': 'select all',
@@ -51,10 +91,10 @@ export const SongsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {metadata?.value.map((data) => (
+            {metadata?.map((data) => (
               <TableRow
                 hover
-                onClick={(event) => handleClick(event, data.index)}
+                onClick={(event) => handleClick(event, data)}
                 role="checkbox"
                 aria-checked={data.selected}
                 tabIndex={-1}

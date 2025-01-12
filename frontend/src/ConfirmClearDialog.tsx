@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from './hooks';
 import { setConfirmClearClosed } from './features/confirmClearSlice';
 import { clearMetadata } from './features/metadataSlice';
 
-export default function ClearAlertDialog() {
+export const ConfirmClearDialog = () => {
   const dispatch = useAppDispatch();
   const open = useAppSelector((state) => state.confirmOpen.open);
 
@@ -33,4 +33,4 @@ export default function ClearAlertDialog() {
       </Dialog>
     </React.Fragment>
   );
-}
+};
