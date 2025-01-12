@@ -8,6 +8,12 @@ const notifyError = (message: string) => {
   });
 };
 
+const notifySuccess = (message: string) => {
+  toast.info(message, {
+    position: 'bottom-center',
+  });
+};
+
 interface Metadata {
   index: number;
   album: string;
@@ -41,11 +47,13 @@ export const metadataSlice = createSlice({
     // Use the PayloadAction type to declare the contents of `action.payload`
     setMetadata: (state, action: PayloadAction<Metadata[]>) => {
       if (!action.payload || action.payload.length === 0) {
-        notifyError(`No files Selected!`);
+        notifyError('No files selected!');
       }
       state.value = action.payload || [];
+      notifySuccess(`${state.value.length} file(s) loaded!`);
     },
     clearMetadata: (state) => {
+      notifySuccess('Data cleared!');
       state.value = [];
     },
   },
