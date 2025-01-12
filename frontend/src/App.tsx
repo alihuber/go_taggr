@@ -1,11 +1,13 @@
+import { ToastContainer, toast } from 'react-toastify';
 import { useState } from 'react';
 import Button from '@mui/material/Button';
-import logo from './assets/images/logo-universal.png';
 import './App.css';
 import { Greet } from '../wailsjs/go/main/App';
+import { MenuBar } from './MenuBar';
+import { Typography } from '@mui/material';
 
 function App() {
-  const [resultText, setResultText] = useState('Please enter your name below 👇');
+  const [resultText, setResultText] = useState('Choose');
   const [name, setName] = useState('');
   const updateName = (e: any) => setName(e.target.value);
   const updateResultText = (result: string) => setResultText(result);
@@ -14,19 +16,25 @@ function App() {
     Greet(name).then(updateResultText);
   }
 
+  const notify = () => {
+    toast.info('Hey 👋!', {
+      position: 'bottom-center',
+    });
+  };
+
   return (
     <div id="App">
-      <img src={logo} id="logo" alt="logo" />
-      <div id="result" className="result">
-        {resultText}
-      </div>
-      <div id="input" className="input-box">
-        <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text" />
-        <button className="btn" onClick={greet}>
-          Greet
-        </button>
-      </div>
-      <Button variant="contained">Hello world</Button>;
+      <MenuBar />
+      <Typography variant="h1" gutterBottom>
+        Name: {resultText}
+      </Typography>
+      <Button variant="contained" onClick={greet}>
+        File
+      </Button>
+      <Button variant="contained" onClick={notify}>
+        Hello world
+      </Button>
+      <ToastContainer />
     </div>
   );
 }
