@@ -1,0 +1,36 @@
+import * as React from 'react';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { setConfirmClearClosed } from './features/confirmClearSlice';
+import { clearMetadata } from './features/metadataSlice';
+
+export default function ClearAlertDialog() {
+  const dispatch = useAppDispatch();
+  const open = useAppSelector((state) => state.confirmOpen.open);
+
+  const handleClose = (answer: boolean) => {
+    if (typeof answer === 'object') {
+      // nothing, user dismissed dialog
+    } else if (typeof answer === 'boolean' && answer) {
+      dispatch(clearMetadata());
+    }
+    dispatch(setConfirmClearClosed());
+  };
+
+  return (
+    <React.Fragment>
+      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
+        <DialogTitle id="alert-dialog-title">{'Discard data?'}</DialogTitle>
+        <DialogActions>
+          <Button onClick={() => handleClose(false)}>No</Button>
+          <Button onClick={() => handleClose(true)} autoFocus>
+            Yes
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </React.Fragment>
+  );
+}

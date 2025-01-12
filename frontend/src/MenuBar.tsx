@@ -1,13 +1,13 @@
 import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
-import { useAppDispatch } from './hooks';
+import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenFiles } from '../wailsjs/go/main/App';
-import { setMetadata, clearMetadata } from './features/metadataSlice';
-import { useState } from 'react';
+import { setMetadata } from './features/metadataSlice';
+import { setConfirmClearOpen } from './features/confirmClearSlice';
 
 export const MenuBar = () => {
   const dispatch = useAppDispatch();
-  // const [clearAlertOpen, setClearAlertOpen] = useState(false);
+  const metadata = useAppSelector((state) => state.metadata);
 
   return (
     <AppBar position="static" className="appBarStyle">
@@ -16,6 +16,7 @@ export const MenuBar = () => {
           <IconButton
             color="inherit"
             aria-label="Open"
+            disabled={metadata?.value?.length !== 0}
             onClick={() => {
               OpenFiles().then((result) => {
                 dispatch(setMetadata(result));
@@ -55,8 +56,9 @@ export const MenuBar = () => {
             sx={{ marginLeft: 'auto' }}
             color="inherit"
             aria-label="Clear"
+            disabled={metadata?.value?.length === 0}
             onClick={() => {
-              dispatch(clearMetadata());
+              dispatch(setConfirmClearOpen());
             }}
           >
             <ClearAllOutlined />

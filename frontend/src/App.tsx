@@ -5,6 +5,7 @@ import './App.css';
 import { MenuBar } from './MenuBar';
 import { Grid2 } from '@mui/material';
 import { SongsTable } from './SongsTable';
+import AlertDialog from './ClearAlertDialog';
 
 const darkTheme = createTheme({
   palette: {
@@ -29,6 +30,7 @@ function App() {
         </Grid2>
         <ToastContainer />
       </div>
+      <AlertDialog />
     </ThemeProvider>
   );
 }
