@@ -5,6 +5,7 @@ import { OpenMusicFiles } from '../wailsjs/go/main/App';
 import { Metadata, setLoadedMetadata, setMetadata, setSelectedMetadata } from './features/metadataSlice';
 import { MouseEvent } from 'react';
 import { setMessage } from './features/messageSlice';
+import { EMPTY_METADATA } from './constants';
 
 export const SongsTable = () => {
   const dispatch = useAppDispatch();
@@ -22,21 +23,7 @@ export const SongsTable = () => {
         clone.selected = false;
         clonedData.push(clone);
       });
-      const emptyData = {
-        album: '',
-        albumArtist: '',
-        artist: '',
-        comment: '',
-        cover: '',
-        fileName: '',
-        genre: '',
-        index: 0,
-        selected: false,
-        title: '',
-        track: '',
-        year: '',
-      };
-      dispatch(setSelectedMetadata(emptyData));
+      dispatch(setSelectedMetadata(EMPTY_METADATA));
     } else {
       metadata.forEach((data) => {
         const clone = cloneDeep(data);

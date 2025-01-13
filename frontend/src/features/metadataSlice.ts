@@ -1,6 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
 import { toast } from 'react-toastify';
+import { EMPTY_METADATA } from '../constants';
 
 const notifyError = (message: string) => {
   toast.error(message, {
@@ -54,21 +55,6 @@ const initialState: MetadataState = {
   },
 };
 
-const emptyData = {
-  album: '',
-  albumArtist: '',
-  artist: '',
-  comment: '',
-  cover: '',
-  fileName: '',
-  genre: '',
-  index: 0,
-  selected: false,
-  title: '',
-  track: '',
-  year: '',
-};
-
 type InputUpdateAction = {
   inputType: string;
   newValue: string;
@@ -104,7 +90,7 @@ export const metadataSlice = createSlice({
       state.value[action.payload.index] = action.payload;
       const currentlySelected = state.value.find((data) => data.selected);
       if (!currentlySelected || action.payload.fileName.length === 0) {
-        state.selectedMetadata = emptyData;
+        state.selectedMetadata = EMPTY_METADATA;
       } else {
         state.selectedMetadata = currentlySelected;
       }
@@ -123,8 +109,8 @@ export const metadataSlice = createSlice({
       state.value.forEach((metadata) => {
         const filePath = metadata.fileName || '';
         const extractedFilename = filePath.slice(filePath.lastIndexOf('/') + 1, filePath.length);
-        const foundFileName = extractedFilename.match(action.payload || '');
-        if (foundFileName && foundFileName.length !== 0) {
+        const foundFileName = extractedFilename.match(action.payload || '') || '';
+        if (foundFileName?.length !== 0) {
           metadata.title = foundFileName[1].trim();
         }
       });
