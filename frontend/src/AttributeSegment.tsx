@@ -11,14 +11,12 @@ const extractValue = (metadata: Metadata, type: string): string => {
 export const AttributesSegment = () => {
   const metadata = useAppSelector((state) => state.metadata.value);
   const selectedMetadata = useAppSelector((state) => state.metadata.selectedMetadata);
-  // console.log('### metadata', metadata);
-  // console.log('### selectedMetadata', selectedMetadata);
-  const loadedFileSize = metadata?.length !== 0 || 0;
+  const loadedFileSize = metadata?.length || 0;
   const selectedCount = metadata?.filter((data) => data.selected).length || 0;
   const filesLoaded = loadedFileSize !== 0;
   const oneSelected = selectedCount === 1;
   const moreThanOneSelected = selectedCount > 1;
-  const allSelected = loadedFileSize === selectedCount;
+  const allSelected = loadedFileSize !== 0 && loadedFileSize === selectedCount;
   const fields = ['title', 'artist', 'albumArtist', 'album', 'genre', 'year', 'comment'];
 
   return (

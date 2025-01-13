@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"encoding/base64"
+	"errors"
 	"fmt"
 	"log"
 
@@ -41,38 +43,49 @@ func (a *App) startup(ctx context.Context) {
 	a.ctx = ctx
 }
 
-func (a *App) OpenFiles() []Metadata {
+func (a *App) OpenMusicFiles() ([]Metadata, error) {
 	context := a.ctx
 	var fileFilter = []runtime.FileFilter{{DisplayName: "MP3", Pattern: "*.mp3"}}
 	var options = runtime.OpenDialogOptions{Title: "Open files", CanCreateDirectories: false, ShowHiddenFiles: false, Filters: fileFilter}
 	var res, err = runtime.OpenMultipleFilesDialog(context, options)
 	var metadataList []Metadata
-	var emptyResult []Metadata
 	if err != nil {
 		log.Println("Error while opening files: ", err)
-		return emptyResult
+		return nil, err
 	}
 
 	for idx, filename := range res {
 		tag, err := id3v2.Open(filename, id3v2.Options{Parse: true})
 		if err != nil {
 			log.Println("Error while opening files: ", err)
-			return emptyResult
+			return nil, err
 		}
 		defer tag.Close()
 
 		pictures := tag.GetFrames(tag.CommonID("Attached picture"))
-
-		for _, f := range pictures {
-			pic, ok := f.(id3v2.PictureFrame)
+		var encodedPictureString string
+		if len(pictures) > 0 {
+			picture := pictures[0]
+			pic, ok := picture.(id3v2.PictureFrame)
 			if !ok {
 				log.Println("Couldn't assert picture frame")
-				return emptyResult
+				return nil, errors.New("couldn't assert picture frame")
+			}
+			encodedPictureString = base64.StdEncoding.EncodeToString(pic.Picture)
+		}
+
+		comments := tag.GetFrames(tag.CommonID("Comments"))
+		var commentString string
+		for _, f := range comments {
+			comment, ok := f.(id3v2.CommentFrame)
+			if !ok {
+				log.Println("Couldn't assert comment frame")
+				return nil, errors.New("couldn't assert comment frame")
 			}
 
-			// Do something with picture frame.
-			// For example, print the description:
-			fmt.Println(pic.Picture)
+			// Do something with comment frame.
+			// For example, print the text:
+			commentString = comment.Text
 		}
 
 		// Read frames.
@@ -85,18 +98,17 @@ func (a *App) OpenFiles() []Metadata {
 			Album:       tag.Album(),
 			AlbumArtist: tag.Artist(),
 			Artist:      tag.Artist(),
-			Comment:     tag.GetTextFrame(tag.CommonID("COMM")).Text,
-			// TODO: cover image
-			Cover:    "TODO",
-			FileName: filename,
-			Genre:    tag.Genre(),
-			Selected: false,
-			Title:    tag.Title(),
-			Track:    tag.GetTextFrame(tag.CommonID("TRCK")).Text,
-			Year:     tag.Year(),
+			Comment:     commentString,
+			Cover:       encodedPictureString,
+			FileName:    filename,
+			Genre:       tag.Genre(),
+			Selected:    false,
+			Title:       tag.Title(),
+			Track:       tag.GetTextFrame(tag.CommonID("TRCK")).Text,
+			Year:        tag.Year(),
 		}
 		metadataList = append(metadataList, metadata)
 	}
-	fmt.Println("returning ", metadataList)
-	return metadataList
+	// fmt.Println("returning ", metadataList)
+	return metadataList, nil
 }

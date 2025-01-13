@@ -1,5 +1,7 @@
 import { TextField } from '@mui/material';
 import { ChangeEvent } from 'react';
+import { updateAttributeByType } from './features/metadataSlice';
+import { useAppDispatch } from './hooks';
 
 export const AttributeInput = ({
   type,
@@ -17,20 +19,16 @@ export const AttributeInput = ({
   moreThanOneSelected: boolean;
 }) => {
   let disabled = false;
-
-  // console.log('### moreThanOneSelected', moreThanOneSelected);
-  // console.log('### allSelected', allSelected);
-  // console.log('### filesLoaded', filesLoaded);
-  // console.log('### oneSelected', oneSelected);
+  const dispatch = useAppDispatch();
 
   const handleChange = (type: string, event: ChangeEvent) => {
-    console.log('### type', type);
-    console.log('### event', event);
+    const value = (event.target as HTMLInputElement).value;
+    dispatch(updateAttributeByType({ inputType: type, newValue: value }));
   };
 
   const handleBlur = (type: string, event: ChangeEvent) => {
-    console.log('### type', type);
-    console.log('### event', event);
+    const value = (event.target as HTMLInputElement).value;
+    dispatch(updateAttributeByType({ inputType: type, newValue: value }));
   };
 
   if (type === 'title') {

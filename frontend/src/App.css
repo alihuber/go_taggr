@@ -32,6 +32,10 @@
     z-index: 99;
 }
 
+.coverDiv {
+    margin-left: 15px;
+}
+
 .result {
     height: 20px;
     line-height: 20px;

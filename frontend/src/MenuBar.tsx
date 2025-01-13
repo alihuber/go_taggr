@@ -1,9 +1,11 @@
 import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { OpenFiles } from '../wailsjs/go/main/App';
+import { OpenMusicFiles } from '../wailsjs/go/main/App';
 import { setLoadedMetadata } from './features/metadataSlice';
 import { setConfirmClearOpen } from './features/confirmClearSlice';
+import { setFilenameCopyDialogOpen } from './features/filenameCopySlice';
+import { setNumberingDialogOpen } from './features/numberingSlice';
 
 export const MenuBar = () => {
   const dispatch = useAppDispatch();
@@ -18,7 +20,7 @@ export const MenuBar = () => {
             aria-label="Open"
             disabled={metadata?.value?.length !== 0}
             onClick={() => {
-              OpenFiles().then((result) => {
+              OpenMusicFiles().then((result) => {
                 dispatch(setLoadedMetadata(result));
               });
             }}
@@ -27,7 +29,12 @@ export const MenuBar = () => {
           </IconButton>
         </Tooltip>
         <Tooltip title="Numbering">
-          <IconButton color="inherit" aria-label="Numbering" onClick={() => dispatch({ type: 'SET_NUMBERING_DIALOG_OPEN', payload: true })}>
+          <IconButton
+            color="inherit"
+            aria-label="Numbering"
+            disabled={metadata?.value?.length === 0}
+            onClick={() => dispatch(setNumberingDialogOpen())}
+          >
             <FormatListNumberedOutlined />
           </IconButton>
         </Tooltip>
@@ -35,7 +42,8 @@ export const MenuBar = () => {
           <IconButton
             color="inherit"
             aria-label="CopyFilenames"
-            onClick={() => dispatch({ type: 'SET_FILENAME_DIALOG_OPEN', payload: true })}
+            disabled={metadata?.value?.length === 0}
+            onClick={() => dispatch(setFilenameCopyDialogOpen())}
           >
             <FileCopyOutlined />
           </IconButton>
@@ -44,7 +52,9 @@ export const MenuBar = () => {
           <IconButton
             color="inherit"
             aria-label="Save"
+            disabled={metadata?.value?.length === 0}
             onClick={() => {
+              // TODO:
               console.log('foo');
             }}
           >
@@ -57,9 +67,7 @@ export const MenuBar = () => {
             color="inherit"
             aria-label="Clear"
             disabled={metadata?.value?.length === 0}
-            onClick={() => {
-              dispatch(setConfirmClearOpen());
-            }}
+            onClick={() => dispatch(setConfirmClearOpen())}
           >
             <ClearAllOutlined />
           </IconButton>

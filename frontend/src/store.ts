@@ -2,14 +2,18 @@ import { configureStore } from '@reduxjs/toolkit';
 
 import messageReducer from './features/messageSlice';
 import metadataReducer from './features/metadataSlice';
-import confirmReducer from './features/confirmClearSlice';
+import confirmClearReducer from './features/confirmClearSlice';
+import filenameCopyReducer from './features/filenameCopySlice';
+import numberingReducer from './features/numberingSlice';
 
 const store = configureStore({
   reducer: {
-    // Define a top-level state field named `todos`, handled by `todosReducer`
+    // Define a top-level state fields
     message: messageReducer,
     metadata: metadataReducer,
-    confirmOpen: confirmReducer,
+    confirmClearDialog: confirmClearReducer,
+    filenameCopyDialog: filenameCopyReducer,
+    numberingDialog: numberingReducer,
   },
 });
 

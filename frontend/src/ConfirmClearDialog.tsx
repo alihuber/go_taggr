@@ -5,16 +5,31 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { setConfirmClearClosed } from './features/confirmClearSlice';
-import { clearMetadata } from './features/metadataSlice';
+import { clearMetadata, setSelectedMetadata } from './features/metadataSlice';
 
 export const ConfirmClearDialog = () => {
   const dispatch = useAppDispatch();
-  const open = useAppSelector((state) => state.confirmOpen.open);
+  const open = useAppSelector((state) => state.confirmClearDialog.open);
 
   const handleClose = (answer: boolean) => {
     if (typeof answer === 'object') {
       // nothing, user dismissed dialog
     } else if (typeof answer === 'boolean' && answer) {
+      const emptyData = {
+        album: '',
+        albumArtist: '',
+        artist: '',
+        comment: '',
+        cover: '',
+        fileName: '',
+        genre: '',
+        index: 0,
+        selected: false,
+        title: '',
+        track: '',
+        year: '',
+      };
+      dispatch(setSelectedMetadata(emptyData));
       dispatch(clearMetadata());
     }
     dispatch(setConfirmClearClosed());

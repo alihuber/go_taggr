@@ -1,9 +1,10 @@
 import { Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { OpenFiles } from '../wailsjs/go/main/App';
+import { OpenMusicFiles } from '../wailsjs/go/main/App';
 import { Metadata, setLoadedMetadata, setMetadata, setSelectedMetadata } from './features/metadataSlice';
 import { MouseEvent } from 'react';
+import { setMessage } from './features/messageSlice';
 
 export const SongsTable = () => {
   const dispatch = useAppDispatch();
@@ -59,9 +60,14 @@ export const SongsTable = () => {
           variant="outlined"
           color="inherit"
           onClick={() => {
-            OpenFiles().then((result) => {
-              dispatch(setLoadedMetadata(result));
-            });
+            OpenMusicFiles().then(
+              (result) => {
+                dispatch(setLoadedMetadata(result));
+              },
+              (error) => {
+                dispatch(setMessage({ message: error, severity: 'error' }));
+              }
+            );
           }}
         >
           <Typography variant="subtitle1">No files loaded. Click here to open...</Typography>
