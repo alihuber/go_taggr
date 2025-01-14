@@ -4,8 +4,8 @@ import (
 	"context"
 	"encoding/base64"
 	"errors"
-	"fmt"
 	"log"
+	"os"
 
 	"github.com/wailsapp/wails/v2/pkg/runtime"
 
@@ -13,18 +13,17 @@ import (
 )
 
 type Metadata struct {
-	Index       int    `json:"index"`
-	Album       string `json:"album"`
-	AlbumArtist string `json:"albumArtist"`
-	Artist      string `json:"artist"`
-	Comment     string `json:"comment"`
-	Cover       string `json:"cover"`
-	FileName    string `json:"fileName"`
-	Genre       string `json:"genre"`
-	Selected    bool   `json:"selected"`
-	Title       string `json:"title"`
-	Track       string `json:"track"`
-	Year        string `json:"year"`
+	Index    int    `json:"index"`
+	Album    string `json:"album"`
+	Artist   string `json:"artist"`
+	Comment  string `json:"comment"`
+	Cover    string `json:"cover"`
+	FileName string `json:"fileName"`
+	Genre    string `json:"genre"`
+	Selected bool   `json:"selected"`
+	Title    string `json:"title"`
+	Track    string `json:"track"`
+	Year     string `json:"year"`
 }
 
 // App struct
@@ -82,33 +81,88 @@ func (a *App) OpenMusicFiles() ([]Metadata, error) {
 				log.Println("Couldn't assert comment frame")
 				return nil, errors.New("couldn't assert comment frame")
 			}
-
-			// Do something with comment frame.
-			// For example, print the text:
 			commentString = comment.Text
 		}
 
-		// Read frames.
-		fmt.Println()
-		fmt.Println(filename)
-		fmt.Println(tag.Artist())
-		fmt.Println(tag.Title())
 		metadata := Metadata{
-			Index:       idx,
-			Album:       tag.Album(),
-			AlbumArtist: tag.Artist(),
-			Artist:      tag.Artist(),
-			Comment:     commentString,
-			Cover:       encodedPictureString,
-			FileName:    filename,
-			Genre:       tag.Genre(),
-			Selected:    false,
-			Title:       tag.Title(),
-			Track:       tag.GetTextFrame(tag.CommonID("TRCK")).Text,
-			Year:        tag.Year(),
+			Index:    idx,
+			Album:    tag.Album(),
+			Artist:   tag.Artist(),
+			Comment:  commentString,
+			Cover:    encodedPictureString,
+			FileName: filename,
+			Genre:    tag.Genre(),
+			Selected: false,
+			Title:    tag.Title(),
+			Track:    tag.GetTextFrame(tag.CommonID("TRCK")).Text,
+			Year:     tag.Year(),
 		}
 		metadataList = append(metadataList, metadata)
 	}
-	// fmt.Println("returning ", metadataList)
 	return metadataList, nil
+}
+
+func (a *App) OpenImageFile() (string, error) {
+	context := a.ctx
+	var fileFilter = []runtime.FileFilter{{DisplayName: "Images", Pattern: "*.jpeg;*.jpg;*.png"}}
+	var options = runtime.OpenDialogOptions{Title: "Open files", CanCreateDirectories: false, ShowHiddenFiles: false, Filters: fileFilter}
+	var res, err = runtime.OpenFileDialog(context, options)
+	if err != nil {
+		log.Println("Error while opening file: ", err)
+		return "", err
+	}
+	file, err := os.ReadFile(res)
+	if err != nil {
+		log.Println("Error while opening file: ", err)
+		return "", err
+	}
+	encodedPictureString := base64.StdEncoding.EncodeToString(file)
+	return encodedPictureString, nil
+}
+
+func (a *App) SaveMetadata(metadata []Metadata) (bool, error) {
+	for _, data := range metadata {
+		tag, err := id3v2.Open(data.FileName, id3v2.Options{Parse: true})
+		if err != nil {
+			log.Println("Error while opening files: ", err)
+			return false, err
+		}
+		defer tag.Close()
+
+		comment := id3v2.CommentFrame{
+			Encoding:    id3v2.EncodingUTF8,
+			Language:    "eng",
+			Description: "",
+			Text:        data.Comment,
+		}
+
+		tag.DeleteFrames(tag.CommonID("Attached picture"))
+		if len(data.Cover) != 0 {
+			imageBlob, err := base64.StdEncoding.DecodeString(data.Cover)
+			if err != nil {
+				log.Println("Error while decoding image: ", err)
+				return false, err
+			}
+			pic := id3v2.PictureFrame{
+				Encoding:    id3v2.EncodingUTF8,
+				MimeType:    "image/jpeg",
+				PictureType: id3v2.PTFrontCover,
+				Description: "Front cover",
+				Picture:     imageBlob,
+			}
+			tag.AddAttachedPicture(pic)
+		}
+
+		tag.AddCommentFrame(comment)
+		tag.SetAlbum(data.Album)
+		tag.SetArtist(data.Artist)
+		tag.AddCommentFrame(comment)
+		tag.SetGenre(data.Genre)
+		tag.SetTitle(data.Title)
+		tag.AddTextFrame(tag.CommonID("TRCK"), id3v2.EncodingUTF16, data.Track)
+		tag.SetYear(data.Year)
+
+		tag.Save()
+	}
+	return true, nil
 }

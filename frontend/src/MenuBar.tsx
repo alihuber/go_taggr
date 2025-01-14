@@ -1,11 +1,12 @@
 import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { OpenMusicFiles } from '../wailsjs/go/main/App';
+import { OpenMusicFiles, SaveMetadata } from '../wailsjs/go/main/App';
 import { setLoadedMetadata } from './features/metadataSlice';
 import { setConfirmClearOpen } from './features/confirmClearSlice';
 import { setFilenameCopyDialogOpen } from './features/filenameCopySlice';
 import { setNumberingDialogOpen } from './features/numberingSlice';
+import { setMessage } from './features/messageSlice';
 
 export const MenuBar = () => {
   const dispatch = useAppDispatch();
@@ -20,9 +21,14 @@ export const MenuBar = () => {
             aria-label="Open"
             disabled={metadata?.value?.length !== 0}
             onClick={() => {
-              OpenMusicFiles().then((result) => {
-                dispatch(setLoadedMetadata(result));
-              });
+              OpenMusicFiles().then(
+                (result) => {
+                  dispatch(setLoadedMetadata(result));
+                },
+                (error) => {
+                  dispatch(setMessage({ message: error, severity: 'error' }));
+                }
+              );
             }}
           >
             <FileOpenOutlined />
@@ -54,8 +60,14 @@ export const MenuBar = () => {
             aria-label="Save"
             disabled={metadata?.value?.length === 0}
             onClick={() => {
-              // TODO:
-              console.log('foo');
+              SaveMetadata(metadata.value).then(
+                (result) => {
+                  dispatch(setMessage({ message: 'Metadata saved!', severity: 'info' }));
+                },
+                (error) => {
+                  dispatch(setMessage({ message: error, severity: 'error' }));
+                }
+              );
             }}
           >
             <SaveOutlined />

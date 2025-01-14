@@ -1,6 +1,5 @@
 export const EMPTY_METADATA = {
   album: '',
-  albumArtist: '',
   artist: '',
   comment: '',
   cover: '',

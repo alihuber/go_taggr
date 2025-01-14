@@ -18,7 +18,6 @@ const notifySuccess = (message: string) => {
 export interface Metadata {
   index: number;
   album: string;
-  albumArtist: string;
   artist: string;
   comment: string;
   cover: string;
@@ -41,7 +40,6 @@ const initialState: MetadataState = {
   value: [],
   selectedMetadata: {
     album: '',
-    albumArtist: '',
     artist: '',
     comment: '',
     cover: '',
@@ -87,6 +85,9 @@ export const metadataSlice = createSlice({
       state.value = [];
     },
     setSelectedMetadata: (state, action: PayloadAction<Metadata>) => {
+      state.value.forEach((data) => {
+        data.selected = false;
+      });
       state.value[action.payload.index] = action.payload;
       const currentlySelected = state.value.find((data) => data.selected);
       if (!currentlySelected || action.payload.fileName.length === 0) {
@@ -104,6 +105,22 @@ export const metadataSlice = createSlice({
         });
       const selectedMetadataObject = state.selectedMetadata as unknown as Record<string, string>;
       selectedMetadataObject[action.payload.inputType] = action.payload.newValue;
+    },
+    removeImage: (state) => {
+      state.selectedMetadata.cover = '';
+      state.value.forEach((data) => {
+        if (data.selected) {
+          data.cover = '';
+        }
+      });
+      state.value[state.selectedMetadata.index] = state.selectedMetadata;
+    },
+    setImage: (state, action: PayloadAction<string>) => {
+      state.value.forEach((data) => {
+        if (data.selected) {
+          data.cover = action.payload;
+        }
+      });
     },
     setTitlesFromFilename: (state, action: PayloadAction<string>) => {
       state.value.forEach((metadata) => {
@@ -157,6 +174,8 @@ export const {
   updateAttributeByType,
   setTitlesFromFilename,
   setTracksFromNumbering,
+  removeImage,
+  setImage,
 } = metadataSlice.actions;
 
 // Other code such as selectors can use the imported `RootState` type

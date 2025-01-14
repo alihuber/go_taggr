@@ -1,8 +1,11 @@
 import { Button, Card, CardContent, Typography } from '@mui/material';
-import { useAppSelector } from './hooks';
-import { compact } from 'lodash';
+import { useAppDispatch, useAppSelector } from './hooks';
+import { removeImage, setImage } from './features/metadataSlice';
+import { OpenImageFile } from '../wailsjs/go/main/App';
+import { setMessage } from './features/messageSlice';
 
 export const CoverInput = () => {
+  const dispatch = useAppDispatch();
   const metadata = useAppSelector((state) => state.metadata.value);
   const selectedMetadata = useAppSelector((state) => state.metadata.selectedMetadata);
   const loadedFileSize = metadata?.length || 0;
@@ -12,21 +15,28 @@ export const CoverInput = () => {
   const moreThanOneSelected = selectedCount > 1;
   const allSelected = loadedFileSize !== 0 && loadedFileSize === selectedCount;
 
-  const allImages = compact(
-    metadata.map((data) => {
-      if (data.selected && data.cover) {
-        return data.cover;
-      } else {
-        return null;
-      }
-    })
-  );
+  const allImages = metadata.map((data) => {
+    if (data.selected && data.cover) {
+      return data.cover;
+    } else {
+      return '';
+    }
+  });
 
   const openImageDialog = () => {
-    console.log('open');
+    OpenImageFile().then(
+      (result) => {
+        dispatch(setImage(result));
+      },
+      (error) => {
+        dispatch(setMessage({ message: error, severity: 'error' }));
+      }
+    );
   };
 
-  const removeImage = () => {};
+  const removeImg = () => {
+    dispatch(removeImage());
+  };
 
   const imagesEqual = (arr: string[]) => arr.every((v) => v === arr[0]);
   const allImagesNull = (arr: string[]) => arr.every((v) => v.length === 0);
@@ -36,7 +46,7 @@ export const CoverInput = () => {
       <Card>
         <CardContent>
           <Button variant="outlined" color="inherit" onClick={() => openImageDialog()}>
-            <Typography variant="subtitle1">Click here to open an image</Typography>
+            <Typography variant="subtitle1">Click here to set an image</Typography>
           </Button>
         </CardContent>
       </Card>
@@ -48,7 +58,7 @@ export const CoverInput = () => {
       <Card>
         <CardContent>
           <Button variant="outlined" color="inherit" onClick={() => openImageDialog()}>
-            <Typography variant="subtitle1">Multiple Images set. Click here to open an image</Typography>
+            <Typography variant="subtitle1">Multiple Images set. Click here to replace</Typography>
           </Button>
         </CardContent>
       </Card>
@@ -65,7 +75,7 @@ export const CoverInput = () => {
             color="inherit"
             onClick={() => openImageDialog()}
           >
-            <Typography variant="subtitle1">Click here to open an image</Typography>
+            <Typography variant="subtitle1">Click here to set an image</Typography>
           </Button>
         </CardContent>
       </Card>
@@ -76,7 +86,7 @@ export const CoverInput = () => {
     <div className="coverDiv">
       <img src={`data:image/jpeg;base64,${imageString}`} width={230} height={200} />
       <br />
-      <Button variant="outlined" size="small" color="inherit" onClick={() => removeImage()}>
+      <Button variant="outlined" size="small" color="inherit" onClick={() => removeImg()}>
         Remove image
       </Button>
     </div>
@@ -93,10 +103,9 @@ export const CoverInput = () => {
     //   if it is the same image, display that
     //   if it is not the same image or no image: display "multiple" hint and upload button
     // if there are no images: display upload button
-    const allimagesEqual = imagesEqual(allImages);
     if (allImages.length !== 0) {
       if (imagesEqual(allImages) && !allImagesNull(allImages)) {
-        const firstCover = metadata.find((m) => m.cover.length !== 0)?.cover || '';
+        const firstCover = metadata.find((m) => m.selected && m.cover.length !== 0)?.cover || '';
         return displayImage(firstCover);
       } else if (allImagesNull(allImages)) {
         return emptyImage;

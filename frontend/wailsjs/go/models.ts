@@ -3,7 +3,6 @@ export namespace main {
 	export class Metadata {
 	    index: number;
 	    album: string;
-	    albumArtist: string;
 	    artist: string;
 	    comment: string;
 	    cover: string;
@@ -22,7 +21,6 @@ export namespace main {
 	        if ('string' === typeof source) source = JSON.parse(source);
 	        this.index = source["index"];
 	        this.album = source["album"];
-	        this.albumArtist = source["albumArtist"];
 	        this.artist = source["artist"];
 	        this.comment = source["comment"];
 	        this.cover = source["cover"];

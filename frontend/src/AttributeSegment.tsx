@@ -17,7 +17,7 @@ export const AttributesSegment = () => {
   const oneSelected = selectedCount === 1;
   const moreThanOneSelected = selectedCount > 1;
   const allSelected = loadedFileSize !== 0 && loadedFileSize === selectedCount;
-  const fields = ['title', 'artist', 'albumArtist', 'album', 'genre', 'year', 'comment'];
+  const fields = ['title', 'artist', 'album', 'genre', 'year', 'comment'];
 
   return (
     <div>
