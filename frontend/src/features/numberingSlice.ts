@@ -31,6 +31,7 @@ export const numberingSlice = createSlice({
   },
 });
 
-export const { setNumberingDialogClosed, setNumberingDialogOpen, setStoreLeadingZeros, setStoreTrackCount } = numberingSlice.actions;
+export const { setNumberingDialogClosed, setNumberingDialogOpen, setStoreLeadingZeros, setStoreTrackCount } =
+  numberingSlice.actions;
 
 export default numberingSlice.reducer;

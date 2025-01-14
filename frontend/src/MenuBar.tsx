@@ -1,4 +1,10 @@
-import { ClearAllOutlined, FileCopyOutlined, FileOpenOutlined, FormatListNumberedOutlined, SaveOutlined } from '@mui/icons-material';
+import {
+  ClearAllOutlined,
+  FileCopyOutlined,
+  FileOpenOutlined,
+  FormatListNumberedOutlined,
+  SaveOutlined,
+} from '@mui/icons-material';
 import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenMusicFiles, SaveMetadata } from '../wailsjs/go/main/App';
@@ -18,7 +24,6 @@ export const MenuBar = () => {
         <Tooltip title="Open files">
           <IconButton
             color="inherit"
-            aria-label="Open"
             disabled={metadata?.value?.length !== 0}
             onClick={() => {
               OpenMusicFiles().then(
@@ -37,7 +42,6 @@ export const MenuBar = () => {
         <Tooltip title="Numbering">
           <IconButton
             color="inherit"
-            aria-label="Numbering"
             disabled={metadata?.value?.length === 0}
             onClick={() => dispatch(setNumberingDialogOpen())}
           >
@@ -47,7 +51,6 @@ export const MenuBar = () => {
         <Tooltip title="Set title from file name">
           <IconButton
             color="inherit"
-            aria-label="CopyFilenames"
             disabled={metadata?.value?.length === 0}
             onClick={() => dispatch(setFilenameCopyDialogOpen())}
           >
@@ -57,7 +60,6 @@ export const MenuBar = () => {
         <Tooltip title="Save to disk">
           <IconButton
             color="inherit"
-            aria-label="Save"
             disabled={metadata?.value?.length === 0}
             onClick={() => {
               SaveMetadata(metadata.value).then(
@@ -77,7 +79,6 @@ export const MenuBar = () => {
           <IconButton
             sx={{ marginLeft: 'auto' }}
             color="inherit"
-            aria-label="Clear"
             disabled={metadata?.value?.length === 0}
             onClick={() => dispatch(setConfirmClearOpen())}
           >

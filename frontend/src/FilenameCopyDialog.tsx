@@ -22,7 +22,7 @@ export const FilenameCopyDialog = () => {
   };
 
   return (
-    <Dialog open={open} onClose={() => handleClose()} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={() => handleClose()}>
       <DialogTitle id="form-dialog-title">Copy title from file name</DialogTitle>
       <DialogContent>
         <TextField

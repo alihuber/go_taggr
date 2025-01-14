@@ -1,4 +1,15 @@
-import { Button, Checkbox, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from '@mui/material';
+import {
+  Button,
+  Checkbox,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { cloneDeep } from 'lodash';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenMusicFiles } from '../wailsjs/go/main/App';
@@ -64,7 +75,7 @@ export const SongsTable = () => {
   } else {
     return (
       <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 650 }} aria-label="simple table">
+        <Table sx={{ minWidth: 650 }}>
           <TableHead>
             <TableRow>
               <TableCell padding="checkbox">
@@ -72,9 +83,6 @@ export const SongsTable = () => {
                   color="primary"
                   checked={selectedCount > 0 && selectedCount === metadata.length}
                   onChange={onSelectAllClick}
-                  inputProps={{
-                    'aria-label': 'select all',
-                  }}
                 />
               </TableCell>
               <TableCell>#</TableCell>
@@ -89,7 +97,6 @@ export const SongsTable = () => {
                 hover
                 onClick={(event) => handleClick(event, data)}
                 role="checkbox"
-                aria-checked={data.selected}
                 tabIndex={-1}
                 key={data.index}
                 selected={data.selected}

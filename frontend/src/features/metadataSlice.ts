@@ -36,19 +36,7 @@ interface MetadataState {
 
 const initialState: MetadataState = {
   value: [],
-  selectedMetadata: {
-    album: '',
-    artist: '',
-    comment: '',
-    cover: '',
-    fileName: '',
-    genre: '',
-    index: 0,
-    selected: false,
-    title: '',
-    track: '',
-    year: '',
-  },
+  selectedMetadata: EMPTY_METADATA,
 };
 
 type InputUpdateAction = {

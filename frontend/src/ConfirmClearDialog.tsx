@@ -1,4 +1,3 @@
-import * as React from 'react';
 import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -23,16 +22,14 @@ export const ConfirmClearDialog = () => {
   };
 
   return (
-    <React.Fragment>
-      <Dialog open={open} onClose={handleClose} aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description">
-        <DialogTitle id="alert-dialog-title">{'Discard data?'}</DialogTitle>
-        <DialogActions>
-          <Button onClick={() => handleClose(false)}>No</Button>
-          <Button onClick={() => handleClose(true)} autoFocus>
-            Yes
-          </Button>
-        </DialogActions>
-      </Dialog>
-    </React.Fragment>
+    <Dialog open={open} onClose={handleClose}>
+      <DialogTitle>{'Discard data?'}</DialogTitle>
+      <DialogActions>
+        <Button onClick={() => handleClose(false)}>No</Button>
+        <Button onClick={() => handleClose(true)} autoFocus>
+          Yes
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };

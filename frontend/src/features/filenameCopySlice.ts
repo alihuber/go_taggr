@@ -26,6 +26,7 @@ export const filenameCopySlice = createSlice({
   },
 });
 
-export const { setFilenameCopyDialogClosed, setFilenameCopyDialogOpen, setFilenameCopyRegex } = filenameCopySlice.actions;
+export const { setFilenameCopyDialogClosed, setFilenameCopyDialogOpen, setFilenameCopyRegex } =
+  filenameCopySlice.actions;
 
 export default filenameCopySlice.reducer;

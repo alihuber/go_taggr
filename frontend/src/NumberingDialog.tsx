@@ -19,15 +19,27 @@ const NumberingDialog = () => {
   };
 
   return (
-    <Dialog open={open} onClose={() => handleAbort()} aria-labelledby="form-dialog-title">
+    <Dialog open={open} onClose={() => handleAbort()}>
       <DialogTitle id="form-dialog-title">Numbering</DialogTitle>
       <DialogContent>
         <FormControlLabel
-          control={<Checkbox checked={storeZeros} onChange={() => dispatch(setStoreLeadingZeros(!storeZeros))} value="StoreLeadingZeros" />}
+          control={
+            <Checkbox
+              checked={storeZeros}
+              onChange={() => dispatch(setStoreLeadingZeros(!storeZeros))}
+              value="StoreLeadingZeros"
+            />
+          }
           label="Store leading zeros"
         />
         <FormControlLabel
-          control={<Checkbox checked={storeTracks} onChange={() => dispatch(setStoreTrackCount(!storeTracks))} value="StoreTrackCount" />}
+          control={
+            <Checkbox
+              checked={storeTracks}
+              onChange={() => dispatch(setStoreTrackCount(!storeTracks))}
+              value="StoreTrackCount"
+            />
+          }
           label="Store track count"
         />
       </DialogContent>
