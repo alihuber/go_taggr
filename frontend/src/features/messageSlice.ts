@@ -14,12 +14,10 @@ const notifyError = (message: string) => {
   });
 };
 
-// Define a type for the slice state
 interface MessageState {
   value: string;
 }
 
-// Define the initial state using that type
 const initialState: MessageState = {
   value: '',
 };
@@ -31,10 +29,8 @@ type MessagePayload = {
 
 export const messageSlice = createSlice({
   name: 'message',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     setMessage: (state, action: PayloadAction<MessagePayload>) => {
       state.value = action.payload.message;
       switch (action.payload.severity) {
@@ -51,7 +47,6 @@ export const messageSlice = createSlice({
 
 export const { setMessage } = messageSlice.actions;
 
-// Other code such as selectors can use the imported `RootState` type
 export const selectMessage = (state: RootState) => state.message;
 
 export default messageSlice.reducer;

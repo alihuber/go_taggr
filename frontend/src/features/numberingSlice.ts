@@ -1,13 +1,11 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-// Define a type for the slice state
 interface NumberingState {
   open: boolean;
   storeLeadingZeros: boolean;
   storeTrackCount: boolean;
 }
 
-// Define the initial state using that type
 const initialState: NumberingState = {
   open: false,
   storeLeadingZeros: true,
@@ -16,10 +14,8 @@ const initialState: NumberingState = {
 
 export const numberingSlice = createSlice({
   name: 'numbering',
-  // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    // Use the PayloadAction type to declare the contents of `action.payload`
     setNumberingDialogOpen: (state) => {
       state.open = true;
     },
