@@ -28,21 +28,22 @@ export const SongsTable = () => {
 
   const onSelectAllClick = () => {
     const clonedData: Metadata[] = [];
+    // all already selected, deselect
     if (selectedCount === metadata.length) {
       metadata.forEach((data) => {
         const clone = cloneDeep(data);
         clone.selected = false;
         clonedData.push(clone);
       });
-      dispatch(setSelectedMetadata(EMPTY_METADATA));
     } else {
       metadata.forEach((data) => {
         const clone = cloneDeep(data);
         clone.selected = true;
         clonedData.push(clone);
       });
-      dispatch(setSelectedMetadata(clonedData[0]));
+      // dispatch(setSelectedMetadata(clonedData[0]));
     }
+    dispatch(setSelectedMetadata(EMPTY_METADATA));
     dispatch(setMetadata(clonedData));
   };
 
@@ -53,24 +54,23 @@ export const SongsTable = () => {
 
   if (metadata?.length === 0) {
     return (
-      <div className="emptyButton">
-        <Button
-          variant="outlined"
-          color="inherit"
-          onClick={() => {
-            OpenMusicFiles().then(
-              (result) => {
-                dispatch(setLoadedMetadata(result));
-              },
-              (error) => {
-                dispatch(setMessage({ message: error, severity: 'error' }));
-              }
-            );
-          }}
-        >
-          <Typography variant="subtitle1">No files loaded. Click here to open...</Typography>
-        </Button>
-      </div>
+      <Button
+        sx={{ opacity: 0.5, marginTop: '320px' }}
+        variant="outlined"
+        color="inherit"
+        onClick={() => {
+          OpenMusicFiles().then(
+            (result) => {
+              dispatch(setLoadedMetadata(result));
+            },
+            (error) => {
+              dispatch(setMessage({ message: error, severity: 'error' }));
+            }
+          );
+        }}
+      >
+        <Typography variant="subtitle1">No files loaded. Click here to open...</Typography>
+      </Button>
     );
   } else {
     return (

@@ -19,7 +19,8 @@ export const MenuBar = () => {
   const metadata = useAppSelector((state) => state.metadata);
 
   return (
-    <AppBar position="static" className="appBarStyle">
+    // <AppBar position="static" className="appBarStyle">
+    <AppBar position="static" sx={{ position: 'fixed !important', width: '100%', zIndex: '99' }}>
       <Toolbar variant="dense">
         <Tooltip title="Open files">
           <IconButton

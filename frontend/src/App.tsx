@@ -21,7 +21,6 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-
       <div id="App">
         <MenuBar />
         <Grid2 container spacing={2}>
@@ -30,7 +29,7 @@ function App() {
             <br />
             <CoverInput />
           </Grid2>
-          <Grid2 size={8} className="songsTableGrid">
+          <Grid2 size={8} sx={{ marginTop: '50px', borderLeftStyle: 'solid', borderWidth: '1px' }}>
             <SongsTable />
           </Grid2>
         </Grid2>

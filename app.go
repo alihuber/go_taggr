@@ -111,9 +111,12 @@ func (a *App) OpenImageFile() (string, error) {
 		log.Println("Error while opening file: ", err)
 		return "", err
 	}
+	if len(res) == 0 {
+		return "", nil
+	}
 	file, err := os.ReadFile(res)
 	if err != nil {
-		log.Println("Error while opening file: ", err)
+		log.Println("Error while reading file: ", err)
 		return "", err
 	}
 	encodedPictureString := base64.StdEncoding.EncodeToString(file)

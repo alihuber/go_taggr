@@ -100,11 +100,17 @@ export const metadataSlice = createSlice({
       state.value[state.selectedMetadata.index] = state.selectedMetadata;
     },
     setImage: (state, action: PayloadAction<string>) => {
+      if (!action.payload || action.payload.length === 0) {
+        notifyError('No file selected!');
+      } else {
+        notifySuccess('Image file loaded!');
+      }
       state.value.forEach((data) => {
         if (data.selected) {
           data.cover = action.payload;
         }
       });
+      state.selectedMetadata.cover = action.payload;
     },
     setTitlesFromFilename: (state, action: PayloadAction<string>) => {
       state.value.forEach((metadata) => {

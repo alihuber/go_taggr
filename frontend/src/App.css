@@ -15,25 +15,9 @@
     background-origin: content-box;
 }
 
-.emptyButton {
-    margin-top: 320px;
-    opacity: 0.5;
-}
-
-.songsTableGrid {
-    margin-top: 50px;
-    border-left-style: solid;
-    border-width: 1px;
-}
-
-.appBarStyle {
-    position: fixed !important;
-    width: 100%;
-    z-index: 99;
-}
-
 .coverDiv {
-    margin-left: 15px;
+    margin-left: 26px;
+    width: 280px;
 }
 
 .result {
