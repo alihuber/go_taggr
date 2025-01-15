@@ -41,7 +41,6 @@ export const SongsTable = () => {
         clone.selected = true;
         clonedData.push(clone);
       });
-      // dispatch(setSelectedMetadata(clonedData[0]));
     }
     dispatch(setSelectedMetadata(EMPTY_METADATA));
     dispatch(setMetadata(clonedData));

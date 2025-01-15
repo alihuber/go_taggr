@@ -1,18 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
-import { toast } from 'react-toastify';
-
-const notifyInfo = (message: string) => {
-  toast.info(message, {
-    position: 'bottom-center',
-  });
-};
-
-const notifyError = (message: string) => {
-  toast.info(message, {
-    position: 'bottom-center',
-  });
-};
+import { notifyError, notifyInfo } from '../notify';
 
 interface MessageState {
   value: string;
@@ -46,7 +33,5 @@ export const messageSlice = createSlice({
 });
 
 export const { setMessage } = messageSlice.actions;
-
-export const selectMessage = (state: RootState) => state.message;
 
 export default messageSlice.reducer;

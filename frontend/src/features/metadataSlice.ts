@@ -1,19 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import type { RootState } from '../store';
-import { toast } from 'react-toastify';
 import { EMPTY_METADATA } from '../constants';
-
-const notifyError = (message: string) => {
-  toast.error(message, {
-    position: 'bottom-center',
-  });
-};
-
-const notifySuccess = (message: string) => {
-  toast.info(message, {
-    position: 'bottom-center',
-  });
-};
+import { notifyError, notifyInfo } from '../notify';
 
 export interface Metadata {
   index: number;
@@ -57,7 +44,7 @@ export const metadataSlice = createSlice({
       if (!action.payload || action.payload.length === 0) {
         notifyError('No files selected!');
       } else {
-        notifySuccess(`${action.payload.length} file(s) loaded!`);
+        notifyInfo(`${action.payload.length} file(s) loaded!`);
       }
       state.value = action.payload || [];
     },
@@ -65,7 +52,7 @@ export const metadataSlice = createSlice({
       state.value = action.payload || [];
     },
     clearMetadata: (state) => {
-      notifySuccess('Data cleared!');
+      notifyInfo('Data cleared!');
       state.value = [];
     },
     setSelectedMetadata: (state, action: PayloadAction<Metadata>) => {
@@ -91,19 +78,18 @@ export const metadataSlice = createSlice({
       selectedMetadataObject[action.payload.inputType] = action.payload.newValue;
     },
     removeImage: (state) => {
-      state.selectedMetadata.cover = '';
       state.value.forEach((data) => {
         if (data.selected) {
           data.cover = '';
         }
       });
-      state.value[state.selectedMetadata.index] = state.selectedMetadata;
+      state.selectedMetadata.cover = '';
     },
     setImage: (state, action: PayloadAction<string>) => {
       if (!action.payload || action.payload.length === 0) {
         notifyError('No file selected!');
       } else {
-        notifySuccess('Image file loaded!');
+        notifyInfo('Image file loaded!');
       }
       state.value.forEach((data) => {
         if (data.selected) {
@@ -121,7 +107,7 @@ export const metadataSlice = createSlice({
           metadata.title = foundFileName[1].trim();
         }
       });
-      notifySuccess('Titles changed!');
+      notifyInfo('Titles changed!');
     },
     setTracksFromNumbering: (state, action: PayloadAction<SetNumberingAction>) => {
       state.value.forEach((data, idx) => {
@@ -151,7 +137,7 @@ export const metadataSlice = createSlice({
           data.track = trackNum;
         }
       });
-      notifySuccess('Numbering changed!');
+      notifyInfo('Numbering changed!');
     },
   },
 });
@@ -167,8 +153,5 @@ export const {
   removeImage,
   setImage,
 } = metadataSlice.actions;
-
-export const selectMetadata = (state: RootState) => state.metadata.value;
-export const selectedMetadata = (state: RootState) => state.metadata.selectedMetadata;
 
 export default metadataSlice.reducer;
