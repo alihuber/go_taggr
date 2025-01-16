@@ -9,10 +9,10 @@ const extractValue = (metadata: Metadata, type: string): string => {
 };
 
 export const AttributesSegment = () => {
-  const metadata = useAppSelector((state) => state.metadata.value);
+  const metadataList = useAppSelector((state) => state.metadata.metadataList);
   const selectedMetadata = useAppSelector((state) => state.metadata.selectedMetadata);
-  const loadedFileSize = metadata?.length || 0;
-  const selectedCount = metadata?.filter((data) => data.selected).length || 0;
+  const loadedFileSize = metadataList?.length || 0;
+  const selectedCount = metadataList?.filter((data) => data.selected).length || 0;
   const filesLoaded = loadedFileSize !== 0;
   const oneSelected = selectedCount === 1;
   const moreThanOneSelected = selectedCount > 1;

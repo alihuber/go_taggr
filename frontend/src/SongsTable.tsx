@@ -20,23 +20,23 @@ import { EMPTY_METADATA } from './constants';
 
 export const SongsTable = () => {
   const dispatch = useAppDispatch();
-  const metadata = useAppSelector((state) => state?.metadata?.value);
+  const metadataList = useAppSelector((state) => state?.metadata?.metadataList);
   let selectedCount = 0;
-  metadata.forEach((value) => {
-    if (value.selected) selectedCount++;
+  metadataList.forEach((data) => {
+    if (data.selected) selectedCount++;
   });
 
   const onSelectAllClick = () => {
     const clonedData: Metadata[] = [];
     // all already selected, deselect
-    if (selectedCount === metadata.length) {
-      metadata.forEach((data) => {
+    if (selectedCount === metadataList.length) {
+      metadataList.forEach((data) => {
         const clone = cloneDeep(data);
         clone.selected = false;
         clonedData.push(clone);
       });
     } else {
-      metadata.forEach((data) => {
+      metadataList.forEach((data) => {
         const clone = cloneDeep(data);
         clone.selected = true;
         clonedData.push(clone);
@@ -51,7 +51,7 @@ export const SongsTable = () => {
     dispatch(setSelectedMetadata(clonedData));
   };
 
-  if (metadata?.length === 0) {
+  if (metadataList?.length === 0) {
     return (
       <Button
         sx={{ opacity: 0.5, marginTop: '320px' }}
@@ -80,7 +80,7 @@ export const SongsTable = () => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedCount > 0 && selectedCount === metadata.length}
+                  checked={selectedCount > 0 && selectedCount === metadataList.length}
                   onChange={onSelectAllClick}
                 />
               </TableCell>
@@ -91,7 +91,7 @@ export const SongsTable = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {metadata?.map((data) => (
+            {metadataList?.map((data) => (
               <TableRow
                 hover
                 onClick={(event) => handleClick(event, data)}

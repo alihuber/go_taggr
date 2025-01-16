@@ -17,12 +17,12 @@ export interface Metadata {
 }
 
 interface MetadataState {
-  value: Metadata[];
+  metadataList: Metadata[];
   selectedMetadata: Metadata;
 }
 
 const initialState: MetadataState = {
-  value: [],
+  metadataList: [],
   selectedMetadata: EMPTY_METADATA,
 };
 
@@ -46,21 +46,21 @@ export const metadataSlice = createSlice({
       } else {
         notifyInfo(`${action.payload.length} file(s) loaded!`);
       }
-      state.value = action.payload || [];
+      state.metadataList = action.payload || [];
     },
     setMetadata: (state, action: PayloadAction<Metadata[]>) => {
-      state.value = action.payload || [];
+      state.metadataList = action.payload || [];
     },
     clearMetadata: (state) => {
       notifyInfo('Data cleared!');
-      state.value = [];
+      state.metadataList = [];
     },
     setSelectedMetadata: (state, action: PayloadAction<Metadata>) => {
-      state.value.forEach((data) => {
+      state.metadataList.forEach((data) => {
         data.selected = false;
       });
-      state.value[action.payload.index] = action.payload;
-      const currentlySelected = state.value.find((data) => data.selected);
+      state.metadataList[action.payload.index] = action.payload;
+      const currentlySelected = state.metadataList.find((data) => data.selected);
       if (!currentlySelected || action.payload.fileName.length === 0) {
         state.selectedMetadata = EMPTY_METADATA;
       } else {
@@ -68,8 +68,8 @@ export const metadataSlice = createSlice({
       }
     },
     updateAttributeByType: (state, action: PayloadAction<InputUpdateAction>) => {
-      state.value
-        .filter((value) => value.selected)
+      state.metadataList
+        .filter((metadataList) => metadataList.selected)
         .forEach((metadata) => {
           const metadataObject = metadata as unknown as Record<string, string>;
           metadataObject[action.payload.inputType] = action.payload.newValue;
@@ -78,7 +78,7 @@ export const metadataSlice = createSlice({
       selectedMetadataObject[action.payload.inputType] = action.payload.newValue;
     },
     removeImage: (state) => {
-      state.value.forEach((data) => {
+      state.metadataList.forEach((data) => {
         if (data.selected) {
           data.cover = '';
         }
@@ -91,7 +91,7 @@ export const metadataSlice = createSlice({
       } else {
         notifyInfo('Image file loaded!');
       }
-      state.value.forEach((data) => {
+      state.metadataList.forEach((data) => {
         if (data.selected) {
           data.cover = action.payload;
         }
@@ -99,7 +99,7 @@ export const metadataSlice = createSlice({
       state.selectedMetadata.cover = action.payload;
     },
     setTitlesFromFilename: (state, action: PayloadAction<string>) => {
-      state.value.forEach((metadata) => {
+      state.metadataList.forEach((metadata) => {
         const filePath = metadata.fileName || '';
         const extractedFilename = filePath.slice(filePath.lastIndexOf('/') + 1, filePath.length);
         const foundFileName = extractedFilename.match(action.payload || '') || '';
@@ -110,10 +110,10 @@ export const metadataSlice = createSlice({
       notifyInfo('Titles changed!');
     },
     setTracksFromNumbering: (state, action: PayloadAction<SetNumberingAction>) => {
-      state.value.forEach((data, idx) => {
+      state.metadataList.forEach((data, idx) => {
         let trackNum = String(idx + 1);
-        let trackCount = String(state.value.length);
-        let maxLength = String(state.value.length).length;
+        let trackCount = String(state.metadataList.length);
+        let maxLength = String(state.metadataList.length).length;
         if (maxLength === 1) {
           maxLength = 2;
         }
@@ -121,7 +121,7 @@ export const metadataSlice = createSlice({
         const storeTracks = action.payload.storeTrackCount;
         if (storeZeros && storeTracks) {
           trackNum = trackNum.padStart(maxLength, '0');
-          if (state.value.length < 10) {
+          if (state.metadataList.length < 10) {
             trackCount = trackCount.padStart(2, '0');
           }
           data.track = `${trackNum}/${trackCount}`;

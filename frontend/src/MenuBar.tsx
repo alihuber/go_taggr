@@ -16,16 +16,15 @@ import { setMessage } from './features/messageSlice';
 
 export const MenuBar = () => {
   const dispatch = useAppDispatch();
-  const metadata = useAppSelector((state) => state.metadata);
+  const metadataList = useAppSelector((state) => state.metadata.metadataList);
 
   return (
-    // <AppBar position="static" className="appBarStyle">
     <AppBar position="static" sx={{ position: 'fixed !important', width: '100%', zIndex: '99' }}>
       <Toolbar variant="dense">
         <Tooltip title="Open files">
           <IconButton
             color="inherit"
-            disabled={metadata?.value?.length !== 0}
+            disabled={metadataList?.length !== 0}
             onClick={() => {
               OpenMusicFiles().then(
                 (result) => {
@@ -43,7 +42,7 @@ export const MenuBar = () => {
         <Tooltip title="Numbering">
           <IconButton
             color="inherit"
-            disabled={metadata?.value?.length === 0}
+            disabled={metadataList?.length === 0}
             onClick={() => dispatch(setNumberingDialogOpen())}
           >
             <FormatListNumberedOutlined />
@@ -52,7 +51,7 @@ export const MenuBar = () => {
         <Tooltip title="Set title from file name">
           <IconButton
             color="inherit"
-            disabled={metadata?.value?.length === 0}
+            disabled={metadataList?.length === 0}
             onClick={() => dispatch(setFilenameCopyDialogOpen())}
           >
             <FileCopyOutlined />
@@ -61,9 +60,9 @@ export const MenuBar = () => {
         <Tooltip title="Save to disk">
           <IconButton
             color="inherit"
-            disabled={metadata?.value?.length === 0}
+            disabled={metadataList?.length === 0}
             onClick={() => {
-              SaveMetadata(metadata.value).then(
+              SaveMetadata(metadataList).then(
                 (result) => {
                   dispatch(setMessage({ message: 'Metadata saved!', severity: 'info' }));
                 },
@@ -80,7 +79,7 @@ export const MenuBar = () => {
           <IconButton
             sx={{ marginLeft: 'auto' }}
             color="inherit"
-            disabled={metadata?.value?.length === 0}
+            disabled={metadataList?.length === 0}
             onClick={() => dispatch(setConfirmClearOpen())}
           >
             <ClearAllOutlined />

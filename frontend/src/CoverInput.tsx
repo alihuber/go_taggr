@@ -6,16 +6,16 @@ import { setMessage } from './features/messageSlice';
 
 export const CoverInput = () => {
   const dispatch = useAppDispatch();
-  const metadata = useAppSelector((state) => state.metadata.value);
+  const metadataList = useAppSelector((state) => state.metadata.metadataList);
   const selectedMetadata = useAppSelector((state) => state.metadata.selectedMetadata);
-  const loadedFileSize = metadata?.length || 0;
-  const selectedCount = metadata?.filter((data) => data.selected).length || 0;
+  const loadedFileSize = metadataList?.length || 0;
+  const selectedCount = metadataList?.filter((data) => data.selected).length || 0;
   const filesLoaded = loadedFileSize !== 0;
   const oneSelected = selectedCount === 1;
   const moreThanOneSelected = selectedCount > 1;
   const allSelected = loadedFileSize !== 0 && loadedFileSize === selectedCount;
 
-  const allImages = metadata.map((data) => {
+  const allImages = metadataList.map((data) => {
     if (data.selected && data.cover) {
       return data.cover;
     } else {
@@ -105,7 +105,7 @@ export const CoverInput = () => {
     // if there are no images: display upload button
     if (allImages.length !== 0) {
       if (imagesEqual(allImages) && !allImagesNull(allImages)) {
-        const firstCover = metadata.find((m) => m.selected && m.cover.length !== 0)?.cover || '';
+        const firstCover = metadataList.find((m) => m.selected && m.cover.length !== 0)?.cover || '';
         return displayImage(firstCover);
       } else if (allImagesNull(allImages)) {
         return emptyImage;
