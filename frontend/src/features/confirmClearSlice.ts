@@ -1,4 +1,4 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ConfirmClearState {
   open: boolean;
@@ -12,15 +12,12 @@ export const confirmClearSlice = createSlice({
   name: 'confirmClear',
   initialState,
   reducers: {
-    setConfirmClearOpen: (state) => {
-      state.open = true;
-    },
-    setConfirmClearClosed: (state) => {
-      state.open = false;
+    setConfirmClearOpenState: (state, action: PayloadAction<boolean>) => {
+      state.open = action.payload;
     },
   },
 });
 
-export const { setConfirmClearOpen, setConfirmClearClosed } = confirmClearSlice.actions;
+export const { setConfirmClearOpenState } = confirmClearSlice.actions;
 
 export default confirmClearSlice.reducer;

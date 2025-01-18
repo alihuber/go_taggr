@@ -3,7 +3,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { setConfirmClearClosed } from './features/confirmClearSlice';
+import { setConfirmClearOpenState } from './features/confirmClearSlice';
 import { clearMetadata, setSelectedMetadata } from './features/metadataSlice';
 import { EMPTY_METADATA } from './constants';
 
@@ -18,7 +18,7 @@ export const ConfirmClearDialog = () => {
       dispatch(setSelectedMetadata(EMPTY_METADATA));
       dispatch(clearMetadata());
     }
-    dispatch(setConfirmClearClosed());
+    dispatch(setConfirmClearOpenState(false));
   };
 
   return (

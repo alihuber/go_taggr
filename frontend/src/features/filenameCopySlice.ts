@@ -14,11 +14,8 @@ export const filenameCopySlice = createSlice({
   name: 'filenameCopy',
   initialState,
   reducers: {
-    setFilenameCopyDialogOpen: (state) => {
-      state.open = true;
-    },
-    setFilenameCopyDialogClosed: (state) => {
-      state.open = false;
+    setFilenameCopyDialogOpenState: (state, action: PayloadAction<boolean>) => {
+      state.open = action.payload;
     },
     setFilenameCopyRegex: (state, action: PayloadAction<string>) => {
       state.regex = action.payload;
@@ -26,7 +23,6 @@ export const filenameCopySlice = createSlice({
   },
 });
 
-export const { setFilenameCopyDialogClosed, setFilenameCopyDialogOpen, setFilenameCopyRegex } =
-  filenameCopySlice.actions;
+export const { setFilenameCopyDialogOpenState, setFilenameCopyRegex } = filenameCopySlice.actions;
 
 export default filenameCopySlice.reducer;

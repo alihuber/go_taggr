@@ -16,11 +16,8 @@ export const numberingSlice = createSlice({
   name: 'numbering',
   initialState,
   reducers: {
-    setNumberingDialogOpen: (state) => {
-      state.open = true;
-    },
-    setNumberingDialogClosed: (state) => {
-      state.open = false;
+    setNumberingDialogOpenState: (state, action: PayloadAction<boolean>) => {
+      state.open = action.payload;
     },
     setStoreLeadingZeros: (state, action: PayloadAction<boolean>) => {
       state.storeLeadingZeros = action.payload;
@@ -31,7 +28,6 @@ export const numberingSlice = createSlice({
   },
 });
 
-export const { setNumberingDialogClosed, setNumberingDialogOpen, setStoreLeadingZeros, setStoreTrackCount } =
-  numberingSlice.actions;
+export const { setNumberingDialogOpenState, setStoreLeadingZeros, setStoreTrackCount } = numberingSlice.actions;
 
 export default numberingSlice.reducer;

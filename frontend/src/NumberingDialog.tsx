@@ -1,6 +1,6 @@
 import { Button, Checkbox, Dialog, DialogActions, DialogContent, DialogTitle, FormControlLabel } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { setNumberingDialogClosed, setStoreLeadingZeros, setStoreTrackCount } from './features/numberingSlice';
+import { setNumberingDialogOpenState, setStoreLeadingZeros, setStoreTrackCount } from './features/numberingSlice';
 import { setTracksFromNumbering } from './features/metadataSlice';
 
 const NumberingDialog = () => {
@@ -10,12 +10,12 @@ const NumberingDialog = () => {
   const dispatch = useAppDispatch();
 
   const handleAbort = () => {
-    dispatch(setNumberingDialogClosed());
+    dispatch(setNumberingDialogOpenState(false));
   };
 
   const handleClose = (storeZeros: boolean, storeTracks: boolean) => {
     dispatch(setTracksFromNumbering({ storeLeadingZeros: storeZeros, storeTrackCount: storeTracks }));
-    dispatch(setNumberingDialogClosed());
+    dispatch(setNumberingDialogOpenState(false));
   };
 
   return (

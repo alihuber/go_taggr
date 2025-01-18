@@ -9,9 +9,9 @@ import { AppBar, IconButton, Toolbar, Tooltip } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
 import { OpenMusicFiles, SaveMetadata } from '../wailsjs/go/main/App';
 import { setLoadedMetadata } from './features/metadataSlice';
-import { setConfirmClearOpen } from './features/confirmClearSlice';
-import { setFilenameCopyDialogOpen } from './features/filenameCopySlice';
-import { setNumberingDialogOpen } from './features/numberingSlice';
+import { setConfirmClearOpenState } from './features/confirmClearSlice';
+import { setFilenameCopyDialogOpenState } from './features/filenameCopySlice';
+import { setNumberingDialogOpenState } from './features/numberingSlice';
 import { setMessage } from './features/messageSlice';
 
 export const MenuBar = () => {
@@ -43,7 +43,7 @@ export const MenuBar = () => {
           <IconButton
             color="inherit"
             disabled={metadataList?.length === 0}
-            onClick={() => dispatch(setNumberingDialogOpen())}
+            onClick={() => dispatch(setNumberingDialogOpenState(true))}
           >
             <FormatListNumberedOutlined />
           </IconButton>
@@ -52,7 +52,7 @@ export const MenuBar = () => {
           <IconButton
             color="inherit"
             disabled={metadataList?.length === 0}
-            onClick={() => dispatch(setFilenameCopyDialogOpen())}
+            onClick={() => dispatch(setFilenameCopyDialogOpenState(true))}
           >
             <FileCopyOutlined />
           </IconButton>
@@ -80,7 +80,7 @@ export const MenuBar = () => {
             sx={{ marginLeft: 'auto' }}
             color="inherit"
             disabled={metadataList?.length === 0}
-            onClick={() => dispatch(setConfirmClearOpen())}
+            onClick={() => dispatch(setConfirmClearOpenState(true))}
           >
             <ClearAllOutlined />
           </IconButton>

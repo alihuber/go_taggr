@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, InputAdornment, TextField } from '@mui/material';
 import { useAppDispatch, useAppSelector } from './hooks';
-import { setFilenameCopyDialogClosed, setFilenameCopyRegex } from './features/filenameCopySlice';
+import { setFilenameCopyDialogOpenState, setFilenameCopyRegex } from './features/filenameCopySlice';
 import { ChangeEvent } from 'react';
 import { setTitlesFromFilename } from './features/metadataSlice';
 
@@ -9,7 +9,7 @@ export const FilenameCopyDialog = () => {
     if (regexp) {
       dispatch(setTitlesFromFilename(regexp));
     }
-    dispatch(setFilenameCopyDialogClosed());
+    dispatch(setFilenameCopyDialogOpenState(false));
   };
 
   const dispatch = useAppDispatch();
@@ -25,18 +25,7 @@ export const FilenameCopyDialog = () => {
     <Dialog open={open} onClose={() => handleClose()}>
       <DialogTitle id="form-dialog-title">Copy title from file name</DialogTitle>
       <DialogContent>
-        <TextField
-          id="standard-name"
-          label="RegExp"
-          value={regexp}
-          onChange={handleChange}
-          margin="normal"
-          slotProps={{
-            input: {
-              startAdornment: <InputAdornment position="start">RegExp:</InputAdornment>,
-            },
-          }}
-        />
+        <TextField id="standard-name" label="RegExp" value={regexp} onChange={handleChange} margin="normal" />
       </DialogContent>
       <DialogActions>
         <Button onClick={() => handleClose(regexp)} color="primary">
