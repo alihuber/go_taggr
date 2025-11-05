@@ -3,7 +3,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import { ToastContainer } from 'react-toastify';
 import './App.css';
 import { MenuBar } from './MenuBar';
-import { Grid2 } from '@mui/material';
+import { Grid } from '@mui/material';
 import { SongsTable } from './SongsTable';
 import { ConfirmClearDialog } from './ConfirmClearDialog';
 import { AttributesSegment } from './AttributeSegment';
@@ -23,16 +23,16 @@ function App() {
       <CssBaseline />
       <div id="App">
         <MenuBar />
-        <Grid2 container spacing={2}>
-          <Grid2 size={4} sx={{ marginTop: 10, height: 720 }}>
+        <Grid container spacing={2}>
+          <Grid size={4} sx={{ marginTop: 10, height: 720 }}>
             <AttributesSegment />
             <br />
             <CoverInput />
-          </Grid2>
-          <Grid2 size={8} sx={{ marginTop: '50px', borderLeftStyle: 'solid', borderWidth: '1px' }}>
+          </Grid>
+          <Grid size={8} sx={{ marginTop: '50px', borderLeftStyle: 'solid', borderWidth: '1px' }}>
             <SongsTable />
-          </Grid2>
-        </Grid2>
+          </Grid>
+        </Grid>
         <ToastContainer />
       </div>
       <FilenameCopyDialog />
