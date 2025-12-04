@@ -1,8 +1,8 @@
 module taggr
 
-go 1.25.3
+go 1.25.5
 
-require github.com/wailsapp/wails/v2 v2.10.2
+require github.com/wailsapp/wails/v2 v2.11.0
 
 require github.com/bogem/id3v2/v2 v2.1.4
 
@@ -28,7 +28,7 @@ require (
 	github.com/tkrajina/go-reflector v0.5.8 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	github.com/wailsapp/go-webview2 v1.0.19 // indirect
+	github.com/wailsapp/go-webview2 v1.0.22 // indirect
 	github.com/wailsapp/mimetype v1.4.1 // indirect
 	golang.org/x/crypto v0.33.0 // indirect
 	golang.org/x/net v0.35.0 // indirect
